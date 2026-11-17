@@ -1,0 +1,349 @@
+/* ===== Папки суду · екран гри (сцена 1920×1080) ===== */
+:root {
+  --cobalt: #2B4BF2;
+  --cobalt-700: #1C319D;
+  --cobalt-100: #D5DBFC;
+  --sun: #FFC629;
+  --sun-100: #FFF4D4;
+  --ink: #14161F;
+  --ink-muted: #5B6070;
+  --paper: #F3F4F7;
+  --white: #FFFFFF;
+  --tomato: #F0432E;
+  --teal: #14998F;
+  --bubble: #F5A9C6;
+  --leaf: #86B04A;
+
+  --wood-1: #B9824F;
+  --wood-2: #A06C3E;
+  --wood-3: #8A5A31;
+  --wood-edge: #6E4524;
+
+  --r-card: 24px;
+  --r-pill: 999px;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+[hidden] { display: none !important; }
+
+/* --- масштабування 16:9 --- */
+#viewport {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  background: var(--paper);
+}
+#stage {
+  position: absolute; left: 50%; top: 50%;
+  width: 1920px; height: 1080px;
+  transform-origin: 0 0;
+  background: var(--paper);
+  overflow: hidden;
+  font-size: 32px;
+  line-height: 1.3;
+}
+.scene { position: absolute; inset: 0; }
+
+h1 { font-weight: 700; font-size: 76px; line-height: 1.1; margin: 0; letter-spacing: -0.01em; }
+
+/* --- пігулки --- */
+.pill {
+  display: inline-flex; align-items: center; gap: 12px;
+  border-radius: var(--r-pill);
+  padding: 10px 28px;
+  font-weight: 600; font-size: 30px; line-height: 1.2;
+  background: var(--white); color: var(--ink);
+}
+.pill--outline { border: 3px solid var(--ink); background: var(--white); letter-spacing: 0.04em; }
+.pill--place { letter-spacing: 0; font-size: 34px; }
+.pill--hint { background: var(--paper); border: 3px solid var(--ink); font-size: 32px; padding: 14px 34px; }
+
+/* ===================== СТІЛ ===================== */
+.table-head { position: absolute; left: 0; right: 0; top: 52px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.table-head .sub { margin: 0; font-size: 38px; font-weight: 600; }
+
+.desk { position: absolute; left: 110px; right: 110px; top: 330px; height: 640px; }
+.desk-top {
+  position: absolute; inset: 0 0 34px 0;
+  border-radius: 36px 36px 12px 12px;
+  background:
+    repeating-linear-gradient(176deg, rgba(255,255,255,.05) 0 3px, transparent 3px 26px),
+    repeating-linear-gradient(180deg, rgba(0,0,0,.06) 0 2px, transparent 2px 58px),
+    radial-gradient(ellipse 30% 9% at 22% 30%, rgba(0,0,0,.08), transparent 70%),
+    radial-gradient(ellipse 22% 7% at 76% 72%, rgba(0,0,0,.07), transparent 70%),
+    linear-gradient(180deg, var(--wood-1), var(--wood-2) 70%, var(--wood-3));
+  box-shadow: inset 0 4px 0 rgba(255,255,255,.18), 0 24px 40px rgba(20,22,31,.18);
+  display: grid; place-items: center;
+}
+.desk-edge {
+  position: absolute; left: 14px; right: 14px; bottom: 0; height: 46px;
+  border-radius: 0 0 22px 22px;
+  background: linear-gradient(180deg, var(--wood-edge), #573619);
+}
+
+.folders {
+  display: grid;
+  grid-template-columns: repeat(5, 270px);
+  grid-template-rows: repeat(2, 236px);
+  gap: 44px 40px;
+}
+.folder {
+  position: relative;
+  width: 270px; height: 236px;
+  cursor: pointer;
+  transition: transform .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.folder:hover { transform: translateY(-4px) rotate(-1deg); }
+.folder-tab {
+  position: absolute; left: 18px; top: 0;
+  width: 110px; height: 34px;
+  background: #F4D58A;
+  border-radius: 14px 14px 0 0;
+}
+.folder-body {
+  position: absolute; left: 0; right: 0; top: 24px; bottom: 0;
+  background: linear-gradient(180deg, #FCE4A4, #F4D58A);
+  border-radius: 8px 20px 20px 20px;
+  box-shadow: 0 10px 0 rgba(20,22,31,.18), 0 18px 24px rgba(20,22,31,.18);
+  display: flex; align-items: center; justify-content: center;
+}
+.folder-sheet { /* аркуш, що визирає */
+  position: absolute; left: 22px; right: 22px; top: 12px; height: 40px;
+  background: var(--white); border-radius: 6px 6px 0 0;
+  box-shadow: 0 0 0 1px rgba(20,22,31,.08);
+}
+.folder-num { font-size: 110px; margin-top: -20px; font-weight: 700; line-height: 1; color: var(--ink); }
+.folder-place { position: absolute; top: 14px; right: 16px; font-size: 40px; line-height: 1; }
+.folder-seal {
+  position: absolute; left: 50%; bottom: -18px; transform: translateX(-50%);
+  width: 64px; height: 64px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4E6BFF, var(--cobalt) 55%, var(--cobalt-700));
+  box-shadow: 0 0 0 6px rgba(43,75,242,.25), 0 4px 0 var(--cobalt-700);
+  display: grid; place-items: center;
+  color: var(--white); font-size: 30px; font-weight: 700;
+}
+.folder.closed .folder-body { background: linear-gradient(180deg, #EFE3C6, #DCCDA8); }
+.folder.closed .folder-num, .folder.closed .folder-place, .folder.closed .folder-seal { opacity: .55; }
+.folder.closed .folder-seal { opacity: 0; background: var(--ink-muted); box-shadow: 0 0 0 6px rgba(91,96,112,.2); }
+.mini-stamp {
+  position: absolute; left: 50%; top: 80%;
+  transform: translate(-50%, -50%) rotate(-12deg);
+  background: var(--sun); color: var(--ink);
+  border: 4px solid var(--ink); border-radius: 12px;
+  padding: 6px 12px;
+  font-weight: 700; font-size: 28px; line-height: 1.05; text-align: center;
+  white-space: nowrap;
+  box-shadow: 0 6px 0 rgba(20,22,31,.25);
+}
+.mini-stamp.fresh { animation: miniStamp .45s cubic-bezier(.2,1.6,.4,1) both; }
+@keyframes miniStamp {
+  from { transform: translate(-50%, -50%) rotate(-12deg) scale(1.8); opacity: 0; }
+  to   { transform: translate(-50%, -50%) rotate(-12deg) scale(1); opacity: 1; }
+}
+
+.counter {
+  position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%);
+  background: var(--sun); color: var(--ink);
+  font-weight: 700; font-size: 36px;
+  border-radius: var(--r-pill); padding: 12px 40px;
+  border: 3px solid var(--ink);
+  white-space: nowrap;
+}
+
+/* ===================== СПРАВА ===================== */
+.case-card {
+  position: absolute; inset: 44px 56px;
+  background: var(--white);
+  border-radius: var(--r-card);
+  box-shadow: 0 30px 60px rgba(20,22,31,.14), 0 0 0 1px rgba(20,22,31,.06);
+  padding: 40px 64px 36px;
+  display: flex; flex-direction: column;
+}
+.case-card.opening { animation: caseOpen .55s cubic-bezier(.2,.9,.3,1.05) both; transform-origin: var(--ox, 50%) var(--oy, 50%); }
+@keyframes caseOpen {
+  0%   { transform: scale(.14) rotate(-3deg); opacity: 0; background: #F4D58A; }
+  45%  { opacity: 1; background: #FCE4A4; }
+  100% { transform: none; opacity: 1; background: var(--white); }
+}
+.case-top { display: flex; align-items: center; gap: 22px; }
+.case-tab {
+  background: var(--sun); color: var(--ink);
+  font-weight: 700; font-size: 34px;
+  border-radius: 16px; padding: 8px 24px;
+}
+.case-context {
+  margin: 22px 0 0; font-size: 38px; line-height: 1.32; font-weight: 400;
+  max-width: 1640px; min-height: 100px;
+}
+
+.case-main {
+  flex: 1; display: flex; align-items: center; gap: 56px;
+  margin-top: 8px; min-height: 0;
+}
+.speaker { width: 340px; flex: none; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.avatar {
+  width: 300px; height: 300px;
+  transition: transform .45s cubic-bezier(.3,1.4,.5,1);
+  transform-origin: 50% 90%;
+}
+.avatar svg { width: 100%; height: 100%; display: block; }
+.avatar.speaking svg { animation: breathe .6s ease-in-out infinite alternate; transform-origin: 50% 85%; }
+@keyframes breathe { from { transform: scale(1); } to { transform: scale(1.035) translateY(-3px); } }
+.avatar.lean { transform: rotate(6deg) translateX(22px); }
+.speaker-name { margin-top: 18px; font-weight: 700; font-size: 40px; line-height: 1.15; }
+.speaker-role { margin-top: 6px; font-size: 30px; }
+
+.talk { position: relative; flex: 1; align-self: stretch; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+.badges { min-height: 96px; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin-bottom: 26px; }
+.badge {
+  display: inline-flex; align-items: center;
+  background: var(--sun); color: var(--ink);
+  border: 3px solid var(--ink); border-radius: var(--r-pill);
+  font-weight: 700; font-size: 40px; padding: 12px 32px;
+  box-shadow: 0 6px 0 rgba(20,22,31,.9);
+}
+.badge.fly { animation: badgeFly .5s cubic-bezier(.2,1.5,.4,1) both; }
+@keyframes badgeFly {
+  0%   { transform: translateY(70px) scale(.4) rotate(-8deg); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+.softhint {
+  display: inline-flex; align-items: center;
+  background: var(--sun-100); color: var(--ink);
+  border: 3px dashed var(--ink); border-radius: var(--r-pill);
+  font-weight: 600; font-size: 38px; padding: 12px 32px;
+  animation: softIn .4s ease-out both;
+}
+@keyframes softIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.bubble {
+  position: relative;
+  background: var(--cobalt-100);
+  border-radius: 40px;
+  padding: 44px 56px;
+  min-height: 260px;
+  display: flex; align-items: center;
+}
+.bubble::before { /* хвостик до персонажа */
+  content: ""; position: absolute; left: -38px; top: 50%; margin-top: -30px;
+  border-style: solid; border-width: 30px 44px 30px 0;
+  border-color: transparent var(--cobalt-100) transparent transparent;
+}
+.bubble-text { margin: 0; font-size: 60px; line-height: 1.22; font-weight: 600; color: var(--ink); }
+.bubble-text .caret { display: inline-block; width: .08em; height: .9em; margin-left: 4px; background: var(--ink); vertical-align: -0.08em; opacity: .6; }
+
+.verdict-layer { position: absolute; inset: 0; pointer-events: none; }
+.gavel { position: absolute; right: 0; top: -30px; width: 220px; height: 220px; opacity: 0; transform-origin: 50% 92%; }
+.gavel.hit { animation: gavelHit .5s cubic-bezier(.5,0,.5,1) both; }
+@keyframes gavelHit {
+  0%   { opacity: 0; transform: rotate(-55deg); }
+  25%  { opacity: 1; transform: rotate(-60deg); }
+  60%  { opacity: 1; transform: rotate(14deg); }
+  100% { opacity: 1; transform: rotate(0deg); }
+}
+.gavel.rest { opacity: 1; }
+
+.stamp {
+  position: absolute; left: 50%; top: 58%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  background: var(--sun); color: var(--ink);
+  border: 8px solid var(--ink); border-radius: 22px;
+  padding: 18px 46px;
+  font-weight: 700; font-size: 84px; line-height: 1; letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 12px 0 rgba(20,22,31,.85);
+  opacity: 0;
+}
+.stamp.show { opacity: 1; }
+.stamp.drop { animation: stampDrop .45s cubic-bezier(.2,1.6,.4,1) both, stampShake .24s .45s ease-in-out 1; }
+@keyframes stampDrop {
+  0%   { opacity: 0; transform: translate(-50%, -120%) rotate(-14deg) scale(1.6); }
+  100% { opacity: 1; transform: translate(-50%, -50%) rotate(-8deg) scale(1); }
+}
+@keyframes stampShake {
+  0%, 100% { transform: translate(-50%, -50%) rotate(-8deg); }
+  33% { transform: translate(-51%, -50%) rotate(-9.5deg); }
+  66% { transform: translate(-49%, -50%) rotate(-6.5deg); }
+}
+
+.confetti { position: absolute; left: 50%; top: 58%; width: 0; height: 0; }
+.leaf {
+  position: absolute; left: -14px; top: -9px;
+  width: 30px; height: 18px;
+  border-radius: 0 100% 0 100%;
+  opacity: 0;
+  animation: leafFly .6s cubic-bezier(.15,.7,.3,1) both;
+}
+@keyframes leafFly {
+  0%   { opacity: 1; transform: translate(0,0) rotate(0) scale(.6); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(1); }
+}
+
+.case-bottom { margin-top: 26px; min-height: 96px; display: flex; justify-content: center; align-items: center; }
+.explain {
+  background: var(--sun); color: var(--ink);
+  border-radius: var(--r-card); padding: 20px 36px;
+  font-size: 34px; line-height: 1.3; font-weight: 400;
+  max-width: 1680px;
+  animation: softIn .45s .3s ease-out both;
+}
+.explain b { font-weight: 700; }
+
+/* ===================== КІНЕЦЬ ===================== */
+.end-wrap { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 22px; padding: 60px; }
+.end-wrap h1 { font-size: 80px; }
+.end-sub { margin: 0; font-size: 46px; font-weight: 600; background: var(--sun); border-radius: var(--r-pill); padding: 10px 40px; }
+.end-cards { display: flex; gap: 40px; margin-top: 30px; }
+.end-card {
+  width: 480px; min-height: 380px;
+  background: var(--white); border-radius: var(--r-card);
+  box-shadow: 0 20px 40px rgba(20,22,31,.12);
+  padding: 40px 36px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 14px;
+  animation: softIn .5s ease-out both;
+}
+.end-card:nth-child(2) { animation-delay: .1s; }
+.end-card:nth-child(3) { animation-delay: .2s; }
+.end-emoji { font-size: 84px; line-height: 1; }
+.end-title { font-size: 40px; font-weight: 700; line-height: 1.15; min-height: 92px; display: flex; align-items: center; }
+.end-num {
+  margin-top: auto;
+  background: var(--cobalt); color: var(--white);
+  border-radius: var(--r-pill); padding: 8px 36px;
+  font-size: 44px; font-weight: 700;
+}
+.end-foot { margin: 26px 0 0; font-size: 36px; }
+
+/* ===================== КУТОК ТРЕНЕРА ===================== */
+.corner {
+  position: fixed; right: 10px; bottom: 8px; z-index: 10;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; line-height: 1;
+  opacity: .35; transition: opacity .2s;
+}
+.corner:hover { opacity: 1; }
+.corner a { color: var(--ink); text-decoration: none; background: var(--white); border-radius: var(--r-pill); padding: 5px 9px; box-shadow: 0 0 0 1px rgba(20,22,31,.15); }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: #B9BCC6; }
+.dot.on { background: var(--leaf); box-shadow: 0 0 0 3px rgba(134,176,74,.25); }
+.corner-hint { color: var(--ink); background: var(--white); border-radius: var(--r-pill); padding: 5px 9px; }
+body.pult-on .corner-hint { display: none; }
+body.pult-on .corner { opacity: .2; }
+body.pult-on .corner:hover { opacity: 1; }
+
+/* ===================== Менше руху ===================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .stamp.drop, .stamp.show { opacity: 1; }
+  .gavel.hit { opacity: 1; }
+  .leaf { display: none; }
+}

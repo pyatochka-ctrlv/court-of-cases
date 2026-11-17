@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Папки суду · Справи-блискавки</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+</head>
+<body>
+  <div id="viewport">
+    <div id="stage" aria-live="polite">
+
+      <!-- СТІЛ СУДДІ -->
+      <section id="scene-table" class="scene" hidden>
+        <header class="table-head">
+          <span class="pill pill--outline">ЗАЛА 1 · СУД ЩОДЕННИХ СПРАВ</span>
+          <h1>Справи-блискавки ⚡</h1>
+          <p class="sub">Оберіть номер папки — і відмовте персонажу</p>
+        </header>
+        <div class="desk">
+          <div class="desk-top">
+            <div class="folders" id="folders"></div>
+          </div>
+          <div class="desk-edge"></div>
+        </div>
+        <div class="counter" id="counter">Справ закрито: 0 з 10</div>
+      </section>
+
+      <!-- ВІДКРИТА СПРАВА -->
+      <section id="scene-case" class="scene" hidden>
+        <div class="case-card" id="case-card">
+          <div class="case-top">
+            <span class="case-tab" id="case-tab">Справа № 1</span>
+            <span class="pill pill--outline pill--place" id="case-place">🏫 Школа</span>
+          </div>
+          <p class="case-context" id="case-context"></p>
+
+          <div class="case-main">
+            <div class="speaker" id="speaker">
+              <div class="avatar" id="avatar"></div>
+              <div class="speaker-name" id="speaker-name"></div>
+              <div class="speaker-role" id="speaker-role"></div>
+            </div>
+
+            <div class="talk">
+              <div class="badges" id="badges"></div>
+              <div class="bubble" id="bubble">
+                <p class="bubble-text" id="bubble-text"></p>
+              </div>
+              <div class="verdict-layer" id="verdict-layer">
+                <div class="gavel" id="gavel" aria-hidden="true">
+                  <svg viewBox="0 0 220 220" width="220" height="220">
+                    <rect x="102" y="70" width="16" height="140" rx="8" fill="#9A6A3A"/>
+                    <rect x="102" y="196" width="16" height="14" rx="6" fill="#6B4423"/>
+                    <!-- жолудь лежить боком: шапочка ліворуч, горішок праворуч -->
+                    <ellipse cx="128" cy="58" rx="62" ry="44" fill="#C98A4B"/>
+                    <ellipse cx="146" cy="44" rx="18" ry="9" fill="#E4B27A" opacity=".85"/>
+                    <path d="M76 6 Q30 58 76 110 Q88 114 90 102 L90 14 Q88 2 76 6Z" fill="#6B4423"/>
+                    <path d="M62 26 l10 8 M52 46 l10 8 M50 68 l10 8 M58 88 l10 8" stroke="#8B5A2B" stroke-width="5" stroke-linecap="round"/>
+                    <rect x="38" y="52" width="22" height="12" rx="6" fill="#6B4423"/>
+                  </svg>
+                </div>
+                <div class="stamp" id="stamp">ВІДМОВУ ПРИЙНЯТО</div>
+                <div class="confetti" id="confetti"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="case-bottom">
+            <div class="pill pill--hint" id="hint-pill">🛑 Ні · 💬 Бо — за бажанням · 🔄 Натомість — за бажанням</div>
+            <div class="explain" id="explain" hidden></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- КІНЕЦЬ ЗАСІДАННЯ -->
+      <section id="scene-end" class="scene" hidden>
+        <div class="end-wrap">
+          <span class="pill pill--outline">ЗАЛА 1 · СУД ЩОДЕННИХ СПРАВ</span>
+          <h1>Засідання закрито! ⚖️</h1>
+          <p class="end-sub" id="end-sub">Справ розглянуто: 0 з 10</p>
+          <div class="end-cards">
+            <div class="end-card">
+              <div class="end-emoji">🛑</div>
+              <div class="end-title">Почали з «ні»</div>
+              <div class="end-num" id="end-no">0</div>
+            </div>
+            <div class="end-card">
+              <div class="end-emoji">💬</div>
+              <div class="end-title">Без виправдань</div>
+              <div class="end-num" id="end-noexcuse">0</div>
+            </div>
+            <div class="end-card">
+              <div class="end-emoji">🔄</div>
+              <div class="end-title">Втримали «ні» після перепитування</div>
+              <div class="end-num" id="end-held">0</div>
+            </div>
+          </div>
+          <p class="end-foot">Ваше «ні» — це повна відповідь. Дякуємо, суде! 💛</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Куток тренера: маленький, не на сцені -->
+  <div class="corner" id="corner">
+    <span class="dot" id="pult-dot" title="Пульт"></span>
+    <a href="pult.html" id="pult-link" target="sud-pult" rel="opener">🔗 Пульт</a>
+    <span class="corner-hint" id="corner-hint">Відкрийте пульт у сусідній вкладці</span>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="sync.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F3F4F7">
+  <title>Пульт · Папки суду</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pult.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎛️</text></svg>">
+</head>
+<body>
+  <header class="top">
+    <div class="top-row">
+      <div class="status" id="status"><span class="dot" id="dot"></span><span id="status-text">Екран гри не підключено</span></div>
+      <div class="top-actions">
+        <button class="btn btn--ghost" id="btn-open-screen" type="button">🔗 Відкрити екран гри</button>
+        <button class="btn btn--ghost" id="btn-sound" type="button" aria-pressed="false">🔇 Звук вимкнено</button>
+        <button class="btn btn--ghost" id="btn-new" type="button">Новий урок</button>
+      </div>
+    </div>
+    <div class="room" id="room" hidden>
+      <label for="room-code">Код кімнати (для телефона):</label>
+      <input id="room-code" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="1234" autocomplete="off">
+      <button class="btn btn--small" id="btn-room" type="button">Під'єднатися</button>
+      <span class="room-note" id="room-note"></span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Поточна справа -->
+    <section class="card current" id="current">
+      <div class="empty" id="current-empty">
+        <h2>Стіл судді</h2>
+        <p id="empty-text">Оберіть папку нижче — справа відкриється на екрані гри.</p>
+      </div>
+
+      <div id="current-case" hidden>
+        <div class="case-head">
+          <span class="num" id="c-num">№ 1</span>
+          <div>
+            <h2 id="c-title">Брелок-капібара</h2>
+            <div class="meta" id="c-meta">🏫 Школа · Богдан, однокласник</div>
+          </div>
+        </div>
+        <p class="context" id="c-context"></p>
+
+        <nav class="steps" id="steps" aria-label="Кроки">
+          <button type="button" class="step" data-step="1">1 · Прохання</button>
+          <button type="button" class="step" data-step="2">2 · Відзначити</button>
+          <button type="button" class="step" data-step="3">3 · Перепитати</button>
+          <button type="button" class="step" data-step="4">4 · Вердикт</button>
+        </nav>
+
+        <div class="script">
+          <div class="line" id="line-ask">
+            <div class="line-label">Прохання · ваша роль: <b id="c-name">Богдан</b></div>
+            <p id="c-ask"></p>
+          </div>
+          <div class="line" id="line-reask">
+            <div class="line-label">Перепитування</div>
+            <p id="c-reask"></p>
+          </div>
+        </div>
+
+        <div class="group-label">Відзначити відповідь</div>
+        <div class="badges">
+          <button type="button" class="btn btn--badge" data-badge="no">🛑 Почали з «ні»</button>
+          <button type="button" class="btn btn--badge" data-badge="noexcuse">💬 Без виправдань</button>
+          <button type="button" class="btn btn--badge" data-badge="instead">⭐ Запропонували інше</button>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn--soft" id="btn-retry">🔁 Ще спроба</button>
+          <button type="button" class="btn btn--primary" id="btn-reask">➡️ Перепитати</button>
+          <button type="button" class="btn btn--sun" id="btn-verdict">✅ «Ні» втримали — вердикт</button>
+          <button type="button" class="btn btn--soft" id="btn-rewind">⏪ Перемотати</button>
+        </div>
+
+        <div class="cheat">
+          <div class="cheat-block">
+            <div class="group-label">💪 Сильні відповіді</div>
+            <ul id="c-strong"></ul>
+          </div>
+          <div class="cheat-block">
+            <div class="group-label">👀 На що звернути увагу</div>
+            <p id="c-note"></p>
+          </div>
+          <div class="cheat-block explain" id="c-explain"></div>
+        </div>
+
+        <button type="button" class="btn btn--ghost btn--wide" id="btn-table">← До столу</button>
+      </div>
+    </section>
+
+    <!-- Папки -->
+    <section class="card folders-card">
+      <div class="folders-head">
+        <h2>Папки <span class="count" id="count">0 з 10</span></h2>
+        <button type="button" class="btn btn--primary" id="btn-random">🎲 Випадкова невідкрита</button>
+      </div>
+      <div class="folders" id="folders"></div>
+      <button type="button" class="btn btn--ghost btn--wide" id="btn-end">🏁 Завершити засідання</button>
+      <p class="keys">Клавіші на екрані гри: <kbd>F</kbd> повний екран · <kbd>Space</kbd> далі · <kbd>Esc</kbd> до столу · <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd> бейджі · <kbd>P</kbd> перепитати · <kbd>S</kbd> ще спроба · <kbd>V</kbd> вердикт</p>
+    </section>
+  </main>
+
+  <!-- Модальне вікно «Новий урок» -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h2 id="modal-title">Почати новий урок?</h2>
+      <p>Усі закриті справи знову стануть запечатаними, а лічильник обнулиться.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn--ghost" id="modal-cancel">Скасувати</button>
+        <button type="button" class="btn btn--sun" id="modal-ok">Так, новий урок</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="sync.js"></script>
+  <script src="pult.js"></script>
+</body>
+</html>
